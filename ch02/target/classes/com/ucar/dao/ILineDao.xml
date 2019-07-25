@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ucar.dao.ILineDao">
+    <select id="getAllWordCount" resultType="Integer">
+        select sum(word_count)
+        from result
+    </select>
+    <select id="getNeedLessWord" resultType="int">
+        select Count(word)
+        FROM result
+    </select>
+    <select id="getSpecificLineWordCount" resultType="int">
+        select line_word_count
+        FROM t_b_line
+        where  line_number=#{lineNumber}
+    </select>
+    <select id="getSpecificParagraphWordCount" resultType="int">
+
+        select SUM(line_word_count)
+        FROM t_b_line,t_b_paragraph
+        where paragraph_start_line&lt;=line_number and
+              paragraph_end_line&gt;=line_number and
+              paragraph_number=#{paragraphNumber}
+    </select>
+    <select id="getWordCountTopNByDesc" resultType="com.ucar.train.week1.linganghe.Word">
+        SELECT word,word_count
+        FROM result
+        ORDER BY word_count
+         DESC LIMIT #{paragraphNumber}
+    </select>
+    <select id="getParagraphInfo" resultType="String">
+        select line_text
+        FROM t_b_line,t_b_paragraph
+        where paragraph_start_line&lt;=Line_number and
+             paragraph_end_line&gt;=Line_number and
+              paragraph_number=#{paragraphNumber}
+    </select>
+</mapper>
+
+
